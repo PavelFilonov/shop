@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Пользователи</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="mb-3">Пользователи</h4>
+        <ul class="list-group mb-3">
+            {% for user in users %}
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+                <form method="post">
+                    <h6 class="my-0"><p><label>{{ user.name }} {% if username == user.name %} (я) {% endif %}</label>
+                    </p></h6>
+                    <p><label>id: {{ user.id }}</label></p>
+                    <p><label>Пароль: {{ user.password }}</label></p>
+                    {% if user.is_admin %}
+                    <p><label>Администратор</label></p>
+                    {% endif %}
+
+                    {% if username != user.name %}
+                    <p>
+                        <button type="submit" class="btn btn-secondary" name="delete_user" value="{{ user.id }}">
+                            Удалить
+                        </button>
+                    </p>
+                    {% if not user.is_admin %}
+                    <p>
+                        <button type="submit" class="btn btn-secondary" name="do_admin" value="{{ user.id }}">Назначить
+                            администратором
+                        </button>
+                    </p>
+                    {% endif %}
+                    {% if user.is_admin %}
+                    <p>
+                        <button type="submit" class="btn btn-secondary" name="remove_admin" value="{{ user.id }}">Снять
+                            должность администратора
+                        </button>
+                    </p>
+                    {% endif %}
+                    {% endif %}
+                </form>
+            </li>
+            <br>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
